@@ -18,6 +18,9 @@
                                 <input id="title" type="text" name="title" placeholder="shift manager"
                                     class="block min-w-0 grow bg-white py-1.5 pr-3 px-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" />
                             </div>
+                            @error('title')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
 
@@ -29,8 +32,19 @@
                                 <input id="salary" type="text" name="salary" placeholder="$50,000 "
                                     class="block min-w-0 grow bg-white py-1.5 pr-3 px-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" />
                             </div>
+                            @error('salary')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
+
+                    {{-- @if($errors->any())
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li class="text-red-500 text-sm">{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    @endif --}}
 
                 </div>
             </div>
