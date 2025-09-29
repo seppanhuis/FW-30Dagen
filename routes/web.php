@@ -7,6 +7,10 @@ Route::get('/', function () {
     return view('home');
 });
 
+// Jobs
+
+
+//all jobs
 Route::get('/jobs', function () {
     $jobs = job::with("employer")->latest   ()->simplepaginate(5);
 
@@ -15,16 +19,19 @@ Route::get('/jobs', function () {
     ]);
 });
 
+//create job
 Route::get('/jobs/create', function () {
     return view('jobs.create');
 });
 
+//single job
 Route::get('/jobs/{id}', function ($id) {
 
     $job = job::find($id);
     return view('jobs.show', ['job' => $job]);
 });
 
+//store job
 Route::post('/jobs', function () {
     $validated = request()->validate([
         'title' => 'required|min:3',
@@ -40,6 +47,27 @@ Route::post('/jobs', function () {
     return redirect('/jobs');
 });
 
+
+//Edit job
+Route::get('/jobs/{id}/edit', function ($id) {
+
+    $job = job::find($id);
+    return view('jobs.edit', ['job' => $job]);
+});
+
+//Update job
+Route::patch('/jobs/{id}', function ($id) {
+
+});
+
+//destroy job
+Route::delete('/jobs/{id}', function ($id) {
+
+});
+
+
+
+//contact
 Route::get('/contact', function () {
     return view('contact');
 });
