@@ -2,8 +2,9 @@
     <x-slot:Heading>
         Edit Job: {{ $job['title'] }}
     </x-slot:Heading>
-    <form method="POST" action="/jobs">
+    <form method="POST" action="/jobs/{{ $job['id'] }}">
         @csrf
+        @method('PATCH')
         <div class="space-y-12">
             <div class="border-b border-gray-900/10 pb-12">
                 <h2 class="text-base/7 font-semibold text-gray-900">create a new job</h2>
@@ -55,11 +56,16 @@
         </div>
 
         <div class="mt-6 flex items-center justify-end gap-x-6">
+            <button type="submit" form="delete-form" class="text-sm/6 font-semibold text-red-900">delete</button>
             <button type="button" class="text-sm/6 font-semibold text-gray-900"><a href="/jobs/{{ $job['id'] }}">Cancel</a></button>
             <button type="submit"
                 class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Update</button>
         </div>
     </form>
 
+    <form method="POST" action="/jobs/{{ $job->id }}" class="hidden" id="delete-form">
+        @csrf
+        @method('DELETE')
+    </form>
 
 </x-layout>
