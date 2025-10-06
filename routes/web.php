@@ -1,7 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginUserController;
+use App\Http\Controllers\RegisterUserController;
 use App\Models\job;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('home');
@@ -9,71 +11,71 @@ Route::get('/', function () {
 
 // Jobs
 
-
-//all jobs
+// all jobs
 Route::get('/jobs', function () {
-    $jobs = job::with("employer")->latest   ()->simplepaginate(5);
+    $jobs = job::with('employer')->latest()->simplepaginate(5);
 
     return view('jobs.index', [
-        'jobs' => $jobs
+        'jobs' => $jobs,
     ]);
 });
 
-//create job
+// create job
 Route::get('/jobs/create', function () {
     return view('jobs.create');
 });
 
-//single job
+// single job
 Route::get('/jobs/{id}', function ($id) {
 
     $job = job::find($id);
+
     return view('jobs.show', ['job' => $job]);
 });
 
-//store job
+// store job
 Route::post('/jobs', function () {
     $validated = request()->validate([
         'title' => 'required|min:3',
-        'salary' => 'required'
+        'salary' => 'required',
     ]);
 
     job::create([
         'title' => request('title'),
         'salary' => request('salary'),
-        'employer_id' => 1
+        'employer_id' => 1,
     ]);
 
     return redirect('/jobs');
 });
 
-
-//Edit job
+// Edit job
 Route::get('/jobs/{id}/edit', function ($id) {
 
     $job = job::find($id);
+
     return view('jobs.edit', ['job' => $job]);
 });
 
-//Update job
+// Update job
 Route::patch('/jobs/{id}', function ($id) {
 
-     $validated = request()->validate([
+    $validated = request()->validate([
         'title' => 'required|min:3',
-        'salary' => 'required'
+        'salary' => 'required',
     ]);
 
     $job = job::findOrFail($id);
 
     $job->update([
         'title' => request('title'),
-        'salary' => request('salary')
+        'salary' => request('salary'),
     ]);
 
     return redirect("/jobs/{$id}");
 });
 
-//destroy job
+// destroy job
 Route::delete('/jobs/{id}', function ($id) {
 
     $job = job::findOrFail($id)->delete();
@@ -81,9 +83,15 @@ Route::delete('/jobs/{id}', function ($id) {
     return redirect('/jobs');
 });
 
-
-
-//contact
+// contact
 Route::get('/contact', function () {
     return view('contact');
 });
+
+// register
+Route::get('/register', [RegisterUserController::class, 'create']);
+Route::post('/register', [RegisterUserController::class, 'store']);
+
+// login
+Route::get('/login', [LoginUserController::class, 'create']);
+Route::post('/login', [LoginUserController::class, 'store']);
